@@ -1,21 +1,12 @@
 module Game.Flow where
 
-
 import Game.Types
-    ( Direction(RIGHT, UP, DOWN, LEFT),
-      Game(..),
-      GameState(GameOver, Playing),
-      Snake(..) )
-import Game.Utils ( genPosThat )
+import Game.Utils 
 import Game.Settings
-    ( arena, upKeys, downKeys, leftKeys, rightKeys ) 
-
-
-import Graphics.Gloss.Interface.IO.Game ( Key )
-
+import Graphics.Gloss.Interface.IO.Game 
 
 -- TODO: input bugs
-updateSnakeDir :: Snake -> Graphics.Gloss.Interface.IO.Game.Key -> Snake
+updateSnakeDir :: Snake -> Key -> Snake
 updateSnakeDir snake k
   | k `elem` upKeys    = safePut UP
   | k `elem` downKeys  = safePut DOWN
@@ -31,29 +22,39 @@ updateSnakeDir snake k
                    LEFT  -> RIGHT
                    RIGHT -> LEFT
 
-
 updateGame :: Float -> Game -> IO Game
-updateGame _ game@(Game snake@(Snake body size dir) fruit Playing)
-  | h == fruit = do
+updateGame _ game@(Game snake@(Snake body size dir) fruit Playing _) = do
+  print $ "Head: " ++ show h ++ ", Arena: " ++ show arena ++ ", Tail: " ++ show t
+  if h == fruit then do 
       (a, b) <- genPosThat (`notElem` new_pos : body ++ arena)
-      let snake' = snake { snake_body = body',
-                          snake_size = size' }
-      return game { game_character = snake', game_fruit = (a, b) }
+      return game' { game_fruit = (a, b) }
 
-  | h `elem` arena ++ t = return $ game { game_state = GameOver }
-  | otherwise = return $
-    let snake' = snake { snake_body = body',
-                         snake_size = size' }
-    in game {game_character = snake'}
+  else if h `elem` arena ++ t then do 
+    print "GameOver!!!"
+    return game' { game_state = GameOver }
+
+  else return game'
+
        where h@(x, y) = head body
              t = drop 1 body
 
              size' = if h == fruit then size+1 else size
              body' = take size' (new_pos : body)
+             snake'= snake { snake_body = body',
+                             snake_size = size' }
+             game' = game {game_character = snake'}
 
              new_pos = case dir of
                              UP    -> (x, y+1)
                              DOWN  -> (x, y-1)
                              LEFT  -> (x-1, y)
                              RIGHT -> (x+1, y)
-updateGame _ game = return game
+
+updateGame _ game@(Game _ _ GameOver k) = return $
+  case k of 
+    SpecialKey KeySpace -> initialGame
+    
+    _ -> game
+
+updateGame _ game = return game 
+

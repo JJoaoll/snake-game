@@ -1,4 +1,5 @@
 module Game.Types where
+import Graphics.Gloss.Interface.IO.Game (Key)
 
 type Pos2D = (Int, Int)
 
@@ -16,4 +17,5 @@ data Snake = Snake
 data Game = Game
   { game_character :: Snake
   , game_fruit     :: Pos2D
-  , game_state     :: GameState }
+  , game_state     :: GameState
+  , last_key       :: Key }

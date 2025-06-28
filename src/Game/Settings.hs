@@ -8,10 +8,6 @@ import Game.Types
       Snake(Snake) )
 
 import Graphics.Gloss.Interface.IO.Game
-    ( black,
-      Color,
-      Key(Char, SpecialKey),
-      SpecialKey(KeyRight, KeyUp, KeyDown, KeyLeft) )
 
 backgroundColor :: Color
 backgroundColor = black
@@ -24,7 +20,7 @@ gameMap :: [Pos2D]
 gameMap = [(x, y) | x <- [1 .. width], y <- [1 .. height]]
 
 initialGame :: Game
-initialGame = Game (Snake [(6,6),(5,6),(4,6)] 3 RIGHT) (10, 10) Playing
+initialGame = Game (Snake [(6,6),(5,6),(4,6)] 3 RIGHT) (10, 10) Playing (SpecialKey KeySpace)
 
 upKeys, downKeys, leftKeys, rightKeys :: [Key]
 upKeys    = [SpecialKey KeyUp   , Char 'w']
