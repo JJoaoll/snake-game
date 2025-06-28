@@ -8,3 +8,7 @@
 
 * Now the game has a "pause screen"
 and a "play again `"screen`"" too.
+
+## 0.1.2.0 -- 2025-06-28 
+
+* Now the size issues about width and heigth are fixed.

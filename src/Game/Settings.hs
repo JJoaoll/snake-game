@@ -29,6 +29,6 @@ leftKeys  = [SpecialKey KeyLeft , Char 'a']
 rightKeys = [SpecialKey KeyRight, Char 'd']
 
 fps, width, height :: Int
-width  = 20
+width  = 26
 height = 15
 fps    = 8

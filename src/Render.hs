@@ -8,12 +8,12 @@ drawSnake :: Snake -> [Picture]
 drawSnake (Snake [] _ _) = []
 drawSnake snake@(Snake (h:t) _ _) =
   let (x, y) = bimap i2f i2f h in
-    translate (x*89 - 935) (y*69 - 550) (color yellow $ squareSolid 50)
+    translate (x*69 - 935) (y*69 - 550) (color yellow $ squareSolid 50)
     : drawSnake snake { snake_body = t }
 
 drawFruit :: Pos2D -> Picture
 drawFruit (x, y) =
-  translate (x'*89 - 935) (y'*69 - 550)
+  translate (x'*69 - 935) (y'*69 - 550)
       (color blue $ circleSolid 25)
   where x'= i2f x
         y'= i2f y
@@ -57,6 +57,6 @@ drawArena = pictures [color red (squareSolid 50) `drawIn` (x, y) | (x, y) <- are
 
 drawIn :: Picture -> Pos2D -> Picture
 drawIn picture (x, y) =
-    translate (x'*89 - 935) (y'*69 - 550) picture
+    translate (x'*69 - 935) (y'*69 - 550) picture
     where x' = i2f x
           y' = i2f y
