@@ -12,3 +12,8 @@ and a "play again `"screen`"" too.
 ## 0.1.2.0 -- 2025-06-28 
 
 * Now the size issues about width and heigth are fixed.
+
+
+## 0.1.2.1 -- 2025-06-28 
+
+* change: Increace snake speed
