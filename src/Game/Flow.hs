@@ -50,11 +50,10 @@ updateGame _ game@(Game snake@(Snake body size dir) fruit Playing _) = do
                              LEFT  -> (x-1, y)
                              RIGHT -> (x+1, y)
 
-updateGame _ game@(Game _ _ GameOver k) = return $
+updateGame _ game@(Game _ _ GameOver k) =
   case k of 
-    SpecialKey KeySpace -> initialGame
-    
-    _ -> game
+    SpecialKey KeySpace -> genFreshStart
+    _ -> return game
 
 updateGame _ game = return game 
 

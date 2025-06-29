@@ -17,3 +17,8 @@ and a "play again `"screen`"" too.
 ## 0.1.2.1 -- 2025-06-28 
 
 * change: Increace snake speed
+
+
+## 0.1.3.0 -- 2025-06-29
+
+* Now the initial position is random generated.
