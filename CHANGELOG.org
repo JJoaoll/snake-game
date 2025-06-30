@@ -1,0 +1,23 @@
+* Revision history for my-snake-game
+
+** 0.2.0.0 - 2025-06-30
+- FIX: "Game Over" spacing fixed.
+- FIX: Arrow keys bug resolved.
+- UI: Arena look improved.
+- TWEAK: Snake speed decreased.
+- FEAT: Score counter added.
+
+** 0.1.3.0 - 2025-06-29
+- FEAT: Initial snake position is now randomly generated.
+
+** 0.1.2.1 - 2025-06-28
+- CHANGE: Increased snake speed.
+
+** 0.1.2.0 - 2025-06-28
+- FIX: Width and height size issues resolved.
+
+** 0.1.1.0 - 2025-06-28
+- FEAT: Added pause screen and play again screen.
+
+** 0.1.0.0 - 2025-06-27
+- Initial release.

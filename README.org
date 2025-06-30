@@ -1,0 +1,43 @@
+#+TITLE: My Snake Game
+#+AUTHOR: Draell
+#+DATE: 2025-06-30
+#+OPTIONS: toc:nil
+
+* 🐍 My Snake Game
+
+A classical game made for study pruposes. 🎮
+The game is made for being simple, fast and funny.
+About:
+  P             ----- PAUSE
+ SPC            ----- RETRY
+ WASD/arrowKeys ----- Movement direction.
+
+Also, a lot of warnings will be there..
+
+* 🎥 Demos
+
+- Gameplay
+  [[./gifs/gameplay.gif]]
+
+- Pause
+  [[./gifs/pause.gif]]
+
+- GameOver
+  [[./gifs/fresh-start.gif]]
+
+* 📦 Installation
+
+dependecys:
+- [ ] Compilador Haskell
+- [ ] `cabal`
+- [ ] A openGL compatible terminal
+
+do {
+```sh
+git clone https://github.com/usuario/my-snake-game.git
+cd my-snake-game
+nix-shell ## if u also use nix things
+cabal run
+```
+have fun!
+}

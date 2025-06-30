@@ -46,16 +46,18 @@ gameOverScreen :: Picture
 gameOverScreen  =
   playAgainTxt <> gameOverTxt
 
--- TODO: separate them to flexibility
 gameOverTxt :: Picture
 gameOverTxt =
-  translate (-350) 0 $
-    color white $ text "Game Over"
+  color white $
+    game <> over
+    where
+      game = translate (-350) 0 (text "Game")
+      over = translate 50 0 (text "Over")
 
 playAgainTxt :: Picture
 playAgainTxt =
   scale 0.3 0.25 $
-    translate (-800) (-300) $
+    translate (-850) (-300) $
       color white $ text "press SPC to play again"
 
 -- empiric for better efficiency, sorry :c
@@ -65,20 +67,6 @@ drawArena = color red $
   <> translate (-4) 473  (rectangleSolid 1726 25)
   <> translate (-854) 0 (rectangleSolid 25 ((866+859)/2 + 60))
   <> translate 847 0    (rectangleSolid 25 ((859+866)/2 + 60))
-  -- <> pictures [color red (squareSolid 50) `drawnIn` (x, y) | (x, y) <- arena]
-  --   pi
-  --   pictures $ aux <$> arena
-  -- -- pictures [color red (rectangleSolid 25 75) `drawIn` (x, y) | (x, y) <- arena, x == 1 || x == width]
-  -- -- <> pictures [color red (rectangleSolid 75 25) `drawIn` (x, y) | (x, y) <- arena, y == 1 || y == width]
-  -- where sq_line = color red $ rectangleSolid 1000 25
-  --       sq_row  = color red $ rectangleSolid 25 1000
-  --       aux (x, y)
-  --         | (x, y) `elem` [(1, 1), (width, height)] =
-  --           sq_row `drawnIn` (x, y) <> sq_line `drawnIn` (x, y)
-  --         | x == 1 || x == width = sq_row `drawnIn` (x, y)
-  --         | otherwise            = sq_line `drawnIn` (x, y)
-
-
 
 drawnIn :: Picture -> Pos2D -> Picture
 drawnIn picture (x, y) =

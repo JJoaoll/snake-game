@@ -31,4 +31,4 @@ rightKeys = [SpecialKey KeyRight, Char 'd']
 fps, width, height :: Int
 width  = 26
 height = 15
-fps    = 12
+fps    = 10
