@@ -8,9 +8,9 @@
 A classical game made for study pruposes. 🎮
 The game is made for being simple, fast and funny.
 About:
-  P             ----- PAUSE
- SPC            ----- RETRY
- WASD/arrowKeys ----- Movement direction.
+ - P              -----> PAUSE
+ - SPC            -----> RETRY
+ - WASD/arrowKeys -----> Movement direction.
 
 Also, a lot of warnings will be there..
 
