@@ -9,7 +9,7 @@ A classical game made for study pruposes. 🎮
 The game is made for being simple, fast and funny.
  - Pause (P)
  - Retry (SPC) 
- - Both WASD/arrowKeys works
+ - Both WASD, ArrowKeys works
 
 Also, a lot of warnings will be there..
 
