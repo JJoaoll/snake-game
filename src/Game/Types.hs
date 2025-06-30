@@ -12,7 +12,8 @@ data GameState = Playing | Pause | GameOver
 data Snake = Snake
   { snake_body :: [Pos2D]
   , snake_size :: Int
-  , snake_dir  :: Direction }
+  , last_dir   :: Direction 
+  , next_dir   :: Direction }
 
 data Game = Game
   { game_character :: Snake

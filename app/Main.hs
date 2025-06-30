@@ -4,7 +4,7 @@ import Graphics.Gloss.Interface.IO.Game
     ( Display(FullScreen), playIO )
 import Game.Flow ( updateGame )
 import Game.Input ( handleInput )
-import Game.Settings ( backgroundColor, initialGame, fps )
+import Game.Settings
 import Render ( drawGame )
 import Game.Utils (genFreshStart)
 

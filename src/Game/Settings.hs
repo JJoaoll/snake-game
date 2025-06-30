@@ -19,8 +19,8 @@ arena = [(x,y) | (x,y) <- gameMap, x ==  width || y == height || x == 1 || y == 
 gameMap :: [Pos2D]
 gameMap = [(x, y) | x <- [1 .. width], y <- [1 .. height]]
 
-initialGame :: Game
-initialGame = Game (Snake [(6,6),(5,6),(4,6)] 3 RIGHT) (10, 10) Playing (SpecialKey KeySpace)
+-- initialGame :: Game
+-- initialGame = Game (Snake [(6,6),(5,6),(4,6)] 3 RIGHT) (10, 10) Playing (SpecialKey KeySpace)
 
 upKeys, downKeys, leftKeys, rightKeys :: [Key]
 upKeys    = [SpecialKey KeyUp   , Char 'w']
@@ -31,4 +31,4 @@ rightKeys = [SpecialKey KeyRight, Char 'd']
 fps, width, height :: Int
 width  = 26
 height = 15
-fps    = 10
+fps    = 12

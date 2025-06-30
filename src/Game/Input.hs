@@ -15,10 +15,11 @@ handleInput (EventKey (Char 'p') Down _ _) g =
     case game_state g of 
       Pause   -> g { game_state = Playing }
       Playing -> g { game_state = Pause }
-      _ -> g 
+      _ -> g
 
-handleInput (EventKey k Down _ _) g@(Game s _ Playing _) =
-  return $ g { game_character = updateSnakeDir s k, last_key = k }
+handleInput (EventKey k Down _ _) g@(Game snake _ Playing _) =
+  return $ g { last_key = k, game_character = updateSnakeDir snake k }
 handleInput (EventKey k Down _ _) g@(Game _ _ GameOver _) =
   return $ g { last_key = k }
 handleInput _ g = return g
+

@@ -3,7 +3,7 @@ module Game.Utils where
 import GHC.Float ( int2Float )
 
 import Game.Types
-import Game.Settings ( width, height, initialGame, arena )
+import Game.Settings
 
 import Graphics.Gloss ( rectangleSolid, Picture )
 import System.Random (randomRIO)
@@ -44,8 +44,8 @@ genFreshStart =
                   LEFT  -> [(x, y), (x+1, y), (x+2,y)]
                   RIGHT -> [(x, y), (x-1, y), (x-2,y)]
      if and [diffPos2D (a, b) (u, v) >= 2 | (a, b) <- arena, (u, v) <- body] then do
-       fruit_pos <- genPosThat (`notElem` body ++ arena)
-       let snake = Snake body 3 dir
+       fruit_pos <- genPosThat (`notElem` body ++ arena) -- TODO: Generalize this fruit thing
+       let snake = Snake body 3 dir dir
        return (Game snake fruit_pos Playing (SpecialKey KeyUnknown))
 
      else genFreshStart
