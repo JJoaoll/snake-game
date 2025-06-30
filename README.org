@@ -3,7 +3,7 @@
 #+DATE: 2025-06-30
 #+OPTIONS: toc:nil
 
-* 🐍 My Snake Game
+* 🐍 Description
 
 A classical game made for study pruposes. 🎮
 The game is made for being simple, fast and funny.
