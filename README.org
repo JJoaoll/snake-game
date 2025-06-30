@@ -21,7 +21,7 @@ Also, a lot of warnings will be there..
 - Pause
   [[./gifs/pause.gif]]
 
-- GameOver
+- Random generation
   [[./gifs/fresh-start.gif]]
 
 * 📦 Installation
