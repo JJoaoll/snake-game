@@ -7,10 +7,9 @@
 
 A classical game made for study pruposes. 🎮
 The game is made for being simple, fast and funny.
-About:
- - P ------------------> PAUSE
- - SPC ----------------> RETRY
- - WASD/arrowKeys -----> Movement direction.
+ - Pause (P)
+ - Retry (SPC) 
+ - Both WASD/arrowKeys works
 
 Also, a lot of warnings will be there..
 
@@ -32,12 +31,11 @@ dependecys:
 - [ ] `cabal`
 - [ ] A openGL compatible terminal
 
-do {
-```sh
+do{
+#+BEGIN_SRC sh
 git clone https://github.com/usuario/my-snake-game.git
 cd my-snake-game
 nix-shell ## if u also use nix things
 cabal run
-```
-have fun!
-}
+#+END_SRC
+have fun }
