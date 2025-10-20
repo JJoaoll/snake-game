@@ -6,8 +6,8 @@ pkgs.mkShell {
     libGLU
     freeglut
     zlib
-    haskellPackages.ghc
-    haskellPackages.cabal-install
+    # haskellPackages.ghc
+    # haskellPackages.cabal-install
     xorg.xorgserver #Xvfb
 
   ];

@@ -14,7 +14,7 @@ updateSnakeDir snake k
   | k `elem` leftKeys  = put LEFT
   | k `elem` rightKeys = put RIGHT
   | otherwise = snake
-  where put dir = snake { next_dir = dir }
+  where put dir = snake { _nextDir = dir }
 
 
 safeRedirect :: Direction -> Direction -> Direction
@@ -32,10 +32,10 @@ updateGame :: Seconds -> Game -> IO Game
 updateGame _ game@(Game snake@(Snake body size from to) fruit Playing _) =
     do if h' == fruit then do
          (a, b) <- genPosThat (`notElem` h' : body ++ arena)
-         return game' { game_fruit = (a, b) }
+         return game' { _gameFruit = (a, b) }
 
         else if h' `elem` arena ++ snk_tail then
-          return game' { game_state = GameOver }
+          return game' { _gameState = GameOver }
 
         else return game'
 
@@ -45,11 +45,11 @@ updateGame _ game@(Game snake@(Snake body size from to) fruit Playing _) =
         dir'  = from `safeRedirect` to
         size' = if h' == fruit then size+1 else size
         body' = take size' (h' : body)
-        snake'= snake { snake_body = body',
-                        snake_size = size',
-                        last_dir = dir' }
+        snake'= snake { _snakeBody = body',
+                        _snakeSize = size',
+                        _lastDir = dir' }
 
-        game' = game {game_character = snake'}
+        game' = game {_gameCharacter = snake'}
         h'    = case dir' of
                   UP    -> (x, y+1)
                   DOWN  -> (x, y-1)

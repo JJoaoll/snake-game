@@ -27,10 +27,12 @@ executable my-snake-game
                      ,Game.Types
                      ,Game.Utils
                      ,Render
+
     build-depends:    base
-                     ,OpenGL
-                     ,gloss
-                     ,random
+                    , OpenGL
+                    , gloss
+                    , random
+                    , lens
 
     hs-source-dirs:   app, src
     default-language: GHC2021

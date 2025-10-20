@@ -12,14 +12,14 @@ handleInput (EventKey (SpecialKey KeyEsc) _ _ _) _ =
 -- TODO: fix this bad solution..
 handleInput (EventKey (Char 'p') Down _ _) g = 
   return $ 
-    case game_state g of 
-      Pause   -> g { game_state = Playing }
-      Playing -> g { game_state = Pause }
+    case _gameState g of 
+      Pause   -> g { _gameState = Playing }
+      Playing -> g { _gameState = Pause }
       _ -> g
 
 handleInput (EventKey k Down _ _) g@(Game snake _ Playing _) =
-  return $ g { last_key = k, game_character = updateSnakeDir snake k }
+  return $ g { _lastKey = k, _gameCharacter = updateSnakeDir snake k }
 handleInput (EventKey k Down _ _) g@(Game _ _ GameOver _) =
-  return $ g { last_key = k }
+  return $ g { _lastKey = k }
 handleInput _ g = return g
 

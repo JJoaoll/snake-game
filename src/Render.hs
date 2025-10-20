@@ -9,7 +9,7 @@ drawSnake (Snake [] _ _ _) = []
 drawSnake snake@(Snake (h:t) _ _ _) =
   let (x, y) = bimap i2f i2f h in
     translate (x*69 - 935) (y*69 - 550) (color yellow $ squareSolid 50)
-    : drawSnake snake { snake_body = t }
+    : drawSnake snake { _snakeBody = t }
 
 drawFruit :: Pos2D -> Picture
 drawFruit (x, y) =
