@@ -1,3 +1,5 @@
+{-# LANGUAGE TemplateHaskell #-}
+
 module Game.Types where
 
 import Control.Lens
@@ -19,6 +21,9 @@ data Snake = Snake
 
 data Game = Game
   { _gameCharacter :: Snake
-  , _gameFruit     :: Pos2D
+  , _gameFruitPos  :: Pos2D
   , _gameState     :: GameState
   , _lastKey       :: Key }
+
+$(makeLenses ''Snake)
+$(makeLenses ''Game)

@@ -32,7 +32,7 @@ updateGame :: Seconds -> Game -> IO Game
 updateGame _ game@(Game snake@(Snake body size from to) fruit Playing _) =
     do if h' == fruit then do
          (a, b) <- genPosThat (`notElem` h' : body ++ arena)
-         return game' { _gameFruit = (a, b) }
+         return game' { _gameFruitPos = (a, b) }
 
         else if h' `elem` arena ++ snk_tail then
           return game' { _gameState = GameOver }
