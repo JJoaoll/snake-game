@@ -19,31 +19,14 @@ import Data.Kind
 import GHC.Float (int2Double)
 import qualified Prelude as P
 import Control.Lens
-import Prelude hiding (Either(..), tail)
+import Prelude hiding (Either(..), tail, LT, GT)
 -- import Prelude (IO(..), Show(..), Eq(..), Bool(..), (.), ($), undefined, )
 
--- total: 1800/1060
-main :: IO ()
-main = P.print "Hello, Haskell!"
--- main = do
---   freshStart <- genFreshStart
---   playIO FullScreen backgroundColor fps freshStart drawGame handleInput updateGame
-
--- data Dir 
---     = North 
---     | West
---     | East
---     | South 
---
---     | Northwest | Northeast
---     | Southwest | Southeast
---     deriving (Show, Eq)
 data Dir 
     = Front 
     | Left
     | Right
     | Back
-
     | FrontLeft | FrontRight 
     | BackLeft  | BackRight 
     deriving (Show, Eq)
@@ -61,7 +44,6 @@ clockWiseRot90 dir =
     Right -> Back
     Back  -> Left
     Left  -> Front
-
     FrontLeft  -> FrontRight
     FrontRight -> BackRight
     BackRight  -> BackLeft
@@ -81,37 +63,46 @@ adjustedBy dir direction =
       clockWiseRot90 $ 
       clockWiseRot90 dir
 
--- dir `redirect` StayFront = dir
---
--- UP    `redirect` TurnLeft = LEFT
--- LEFT  `redirect` TurnLeft = DOWN
--- DOWN  `redirect` TurnLeft = RIGHT
--- RIGHT `redirect` TurnLeft = UP
---
--- UP    `redirect` TurnRight = RIGHT
--- RIGHT `redirect` TurnRight = DOWN
--- DOWN  `redirect` TurnRight = LEFT
--- LEFT  `redirect` TurnRight = UP
-
-data Sensor where
-  WallAhead ::  Double -> Sensor 
-  FoodAhead ::  Double -> Sensor 
-  TailAhead ::  Double -> Sensor 
+data Sensor 
+    = WallAhead 
+    | FoodAhead
+    | TailAhead
   deriving (Show, Eq)
 
+-- i know its not an operation tho..
 data Operator 
     = LT | LEQ | GEQ | GT 
-    -- | NotExists | Exists
   deriving (Show, Eq)
 
 data DecisionTree
     = Action Move
     | Condition (Sensor, Dir) Operator Double DecisionTree DecisionTree
     deriving (Show, Eq)
--- width  = 26
--- height = 15
 
-
+decide :: Game -> DecisionTree -> Move
+decide _game (Action move) = move
+decide game (Condition (sensor, dir) op bounder dtThen dtElse) = 
+  case sensor' dir game of
+    Nothing 
+      | op `elem` [GEQ, GT] -> decide game dtThen
+      | otherwise           -> decide game dtElse
+    Just dlt 
+      | dlt `op'` bounder -> decide game dtThen
+      | otherwise         -> decide game dtElse
+  where 
+    sensor' = case sensor of 
+                  WallAhead -> \d g -> 
+                    Just $ 
+                    wallSensor d g 
+                  FoodAhead -> foodSensor
+                  TailAhead -> tailSensor
+    op' :: Double -> Double -> Bool
+    op' = case op of
+              LT  -> (<)
+              LEQ -> (<=)
+              GEQ -> (>=)
+              GT  -> (>)
+    
 
 wallSensor :: Dir -> Game -> Double
 wallSensor dir game = findFirstThat (`elem` arena) realDir headPos
@@ -150,7 +141,7 @@ findFirstThatWhile p b dir pos -- b stays for "break"
 
 stepIn :: Pos2D -> Dir -> Pos2D
 (x, y) `stepIn` dir = 
-  case dir of -- inside here, theyre up down and whatever..
+  case dir of 
     Front -> (x, y+1)
     Right -> (x+1, y)
     Back  -> (x, y-1)
@@ -161,30 +152,6 @@ stepIn :: Pos2D -> Dir -> Pos2D
     BackRight  -> (x+1, y-1)
     BackLeft   -> (x-1, y-1)
 
-
--- the name for my "GameState" was "Game"
-
--- decideMove :: DecisionTree -> Game -> Direction
--- decideMove (Action move) game = (game^.gameCharacter.lastDir) `turn` move
--- decideMove (Condition sensor thenBranch elseBranch) game =
---     if evalSensor sensor game
---         then decideMove thenBranch game
---         else decideMove elseBranch game
---
--- calcTargetPosFrom :: Pos2D -> Dir -> Pos2D
--- calcTargetPosFrom (x, y) dir =
---     case dir of
---         North -> (x, y + 1)
---         South -> (x, y - 1)
---         East  -> (x + 1, y)
---         West  -> (x - 1, y)
---
---         Northeast -> (x + 1, y + 1)
---         Northwest -> (x - 1, y + 1)
---         Southeast -> (x + 1, y - 1)
---         Southwest -> (x - 1, y - 1)
-
-
 eucDiff :: Pos2D -> Pos2D -> Double
 eucDiff (x0, y0) (x1, y1) = sqrt $ dx**2 + dy**2
   where
@@ -193,39 +160,3 @@ eucDiff (x0, y0) (x1, y1) = sqrt $ dx**2 + dy**2
     
 evalWallSensor :: Game -> Direction -> Double
 evalWallSensor game dir = undefined
--- evalWallSensor :: Direction -> Game -> Int
--- evalWallSensor dir game = raycast 1 (calcTargetPosFrom dir) dir arena
---   where
---     (snake_x, snake_y):_ = game^.gameCharacter.snakeBody
---     calculateTargetPos = calcTargetPosFrom (snake_x, snake_y)
---
--- evalTailSensor :: Direction -> Game -> Maybe Int
--- evalTailSensor dir game = raycast 1 (calculateTargetPos dir) dir tail
---   where
---     (snake_x, snake_y):tail = game^.gameCharacter.snakeBody
---     calculateTargetPos = calculateTargetPosFrom (snake_x, snake_y)
---
--- -- Função 3: Especialista em detectar a fruta
--- evalFruitSensor :: Direction -> Game -> Maybe Int
--- evalFruitSensor dir game =
---   let
---     (snake_x, snake_y):_ = game^.gameCharacter.snakeBody
---     (fruit_x, fruit_y) = game^.gameFruitPos
---     delta_x = fruit_x - snake_x
---     delta_y = fruit_y - snake_y
---   in
---     if isAligned dir (delta_x, delta_y)
---     then Just (abs delta_x + abs delta_y)
---     else Nothing
---   where
---     -- A função 'isAligned' seria definida aqui dentro.
---     isAligned :: Direction -> (Int, Int) -> Bool
---     isAligned d (dx, dy) = undefined  
---
--- -- Ela atua como um "roteador", direcionando para a função correta.
--- -- evalSensor :: Sensor -> Game -> Maybe Int
--- -- evalSensor sensor game =
--- --   case sensor of
--- --     IsWallAhead dir -> evalWallSensor dir game
--- --     IsTailAhead dir -> evalTailSensor dir game
--- --     IsFruitAhead dir -> evalFruitSensor dir game
