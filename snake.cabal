@@ -28,6 +28,8 @@ executable my-snake-game
                      ,Game.Utils
                      ,Render
 
+                     , Dir
+
     build-depends:    base
                     , OpenGL
                     , gloss

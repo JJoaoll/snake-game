@@ -3,10 +3,8 @@
 {-# LANGUAGE StarIsType #-}
 {-# LANGUAGE GADTs                #-}
 {-# LANGUAGE TypeFamilies         #-}
-{-# NoTypeAlias #-}
 
-
-module Main where
+module Dir where
 
 import Graphics.Gloss.Interface.IO.Game
     ( Display(FullScreen), playIO )
@@ -40,7 +38,6 @@ main = P.print "Hello, Haskell!"
 --     | Northwest | Northeast
 --     | Southwest | Southeast
 --     deriving (Show, Eq)
-
 data Dir 
     = Front 
     | Left
