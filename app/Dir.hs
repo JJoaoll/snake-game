@@ -8,11 +8,11 @@ module Dir where
 
 import Graphics.Gloss.Interface.IO.Game
     ( Display(FullScreen), playIO )
-import Game.Flow ( updateGame )
-import Game.Input ( handleInput )
+-- import Game.Flow ( updateGame )
+-- import Game.Input ( handleInput )
 import Game.Settings
-import Render ( drawGame )
-import Game.Utils (genFreshStart)
+-- import Render ( drawGame )
+-- import Game.Utils (genFreshStart)
 import Game.Types
 
 import Data.Kind 
@@ -78,31 +78,6 @@ data DecisionTree
     = Action Move
     | Condition (Sensor, Dir) Operator Double DecisionTree DecisionTree
     deriving (Show, Eq)
-
-decide :: Game -> DecisionTree -> Move
-decide _game (Action move) = move
-decide game (Condition (sensor, dir) op bounder dtThen dtElse) = 
-  case sensor' dir game of
-    Nothing 
-      | op `elem` [GEQ, GT] -> decide game dtThen
-      | otherwise           -> decide game dtElse
-    Just dlt 
-      | dlt `op'` bounder -> decide game dtThen
-      | otherwise         -> decide game dtElse
-  where 
-    sensor' = case sensor of 
-                  WallAhead -> \d g -> 
-                    Just $ 
-                    wallSensor d g 
-                  FoodAhead -> foodSensor
-                  TailAhead -> tailSensor
-    op' :: Double -> Double -> Bool
-    op' = case op of
-              LT  -> (<)
-              LEQ -> (<=)
-              GEQ -> (>=)
-              GT  -> (>)
-    
 
 wallSensor :: Dir -> Game -> Double
 wallSensor dir game = findFirstThat (`elem` arena) realDir headPos

@@ -29,12 +29,19 @@ executable my-snake-game
                      ,Render
 
                      , Dir
+                     , Brain
 
     build-depends:    base
                     , OpenGL
                     , gloss
                     , random
                     , lens
+
+                    , parallel
+                    , time
+                    , deepseq
+
+                    , mtl
 
     hs-source-dirs:   app, src
     default-language: GHC2021

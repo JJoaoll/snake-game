@@ -19,20 +19,20 @@ drawFruit (x, y) =
         y'= i2f y
 
 drawGameScenario :: Game -> Picture
-drawGameScenario (Game snake@(Snake _ score _ _) fruit _ _) =
+drawGameScenario (Game snake@(Snake _ score _ _) fruit _ _ _) =
      pictures $
        drawScore score :
        drawFruit fruit :
        drawArena : drawSnake snake
 
 drawGame :: Game -> IO Picture
-drawGame game@(Game _ _ Playing _) = return $
+drawGame game@(Game _ _ Playing _ _) = return $
   drawGameScenario game
 
-drawGame game@(Game _ _ GameOver _) = return $
+drawGame game@(Game _ _ GameOver _ _) = return $
   gameOverScreen <> drawGameScenario game
 
-drawGame game@(Game snake fruit Pause _) = return $
+drawGame game@(Game snake fruit Pause _ _) = return $
   translate (-200) 0 (color white $ text "Pause")
     <> drawGameScenario game
 

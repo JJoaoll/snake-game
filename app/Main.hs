@@ -8,8 +8,10 @@
 
 module Main where
 
+import Control.Parallel.Strategies
+
 import Graphics.Gloss.Interface.IO.Game
-    ( Display(FullScreen), playIO )
+    -- ( Display(FullScreen), playIO )
 import Game.Flow ( updateGame )
 import Game.Input ( handleInput )
 import Game.Settings
@@ -27,18 +29,10 @@ import Dir
 
 -- total: 1800/1060
 main :: IO ()
-main = P.print "Hello, Haskell!"
--- main = do
---   freshStart <- genFreshStart
---   playIO FullScreen backgroundColor fps freshStart drawGame handleInput updateGame
-
--- data Dir 
---     = North 
---     | West
---     | East
---     | South 
---
---     | Northwest | Northeast
---     | Southwest | Southeast
---     deriving (Show, Eq)
+-- main = P.print "Hello, Haskell!"
+main = do
+  freshStart  <- genFreshStart AI
+  runEval . rpar $ playIO (InWindow "snake" (100, 150) (0, 0)) backgroundColor fps freshStart drawGame handleInput updateGame
+  freshStart' <- genFreshStart AI
+  runEval . rpar $ playIO (InWindow "snake" (100, 150) (10, 10)) backgroundColor fps freshStart' drawGame handleInput updateGame
 

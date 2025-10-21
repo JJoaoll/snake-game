@@ -5,6 +5,11 @@ import Game.Utils
 import Game.Settings
 import Graphics.Gloss.Interface.IO.Game 
 
+import Control.Lens ((^.))
+import Dir
+import qualified Dir as Dir
+import Brain
+
 
 -- TODO: input bugs
 updateSnakeDir :: Snake -> Key -> Snake
@@ -29,7 +34,7 @@ from `safeRedirect` to
 
 type Seconds = Float
 updateGame :: Seconds -> Game -> IO Game
-updateGame _ game@(Game snake@(Snake body size from to) fruit Playing _) =
+updateGame _ game@(Game snake@(Snake body size from to) fruit Playing _ mode) =
     do if h' == fruit then do
          (a, b) <- genPosThat (`notElem` h' : body ++ arena)
          return game' { _gameFruitPos = (a, b) }
@@ -42,7 +47,9 @@ updateGame _ game@(Game snake@(Snake body size from to) fruit Playing _) =
   where (x, y)   = head body
         snk_tail = drop 1 body
 
-        dir'  = from `safeRedirect` to
+        dir'  = case mode of 
+                  Human -> from `safeRedirect` to
+                  AI -> from `turn` decide game brainTest
         size' = if h' == fruit then size+1 else size
         body' = take size' (h' : body)
         snake'= snake { _snakeBody = body',
@@ -56,10 +63,38 @@ updateGame _ game@(Game snake@(Snake body size from to) fruit Playing _) =
                   LEFT  -> (x-1, y)
                   RIGHT -> (x+1, y)
 
-updateGame _ game@(Game _ _ GameOver k) =
+updateGame _ game@(Game _ _ GameOver k _) =
   case k of 
-    SpecialKey KeySpace -> genFreshStart
+    SpecialKey KeySpace -> genFreshStart (game^.playerMode)
     _ -> return game
 
 updateGame _ game = return game 
+
+
+
+---- new ai things
+decide :: Game -> DecisionTree -> Move
+decide _game (Action move) = move
+decide game (Condition (sensor, dir) op bounder dtThen dtElse) = 
+  case sensor' dir game of
+    Nothing 
+      | op `elem` [Dir.GEQ, Dir.GT] -> decide game dtThen
+      | otherwise           -> decide game dtElse
+    Just dlt 
+      | dlt `op'` bounder -> decide game dtThen
+      | otherwise         -> decide game dtElse
+  where 
+    sensor' = case sensor of 
+                  WallAhead -> \d g -> 
+                    Just $ 
+                    wallSensor d g 
+                  FoodAhead -> foodSensor
+                  TailAhead -> tailSensor
+    op' :: Double -> Double -> Bool
+    op' = case op of
+              Dir.LT  -> (<)
+              Dir.LEQ -> (<=)
+              Dir.GEQ -> (>=)
+              Dir.GT  -> (>)
+    
 

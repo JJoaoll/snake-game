@@ -2,6 +2,7 @@ module Game.Utils where
 
 import GHC.Float ( int2Float )
 
+import Dir
 import Game.Types
 import Game.Settings
 
@@ -33,8 +34,8 @@ randomDir = do n <- randomRIO (1 :: Int, 4)
                           3 -> LEFT
                           4 -> RIGHT
 
-genFreshStart :: IO Game
-genFreshStart =
+genFreshStart :: PlayerMode -> IO Game
+genFreshStart player_mode =
   do x <- randomRIO (3, width-2)
      y <- randomRIO (3, height-2)
      dir <- randomDir
@@ -46,6 +47,21 @@ genFreshStart =
      if and [diffPos2D (a, b) (u, v) >= 2 | (a, b) <- arena, (u, v) <- body] then do
        fruit_pos <- genPosThat (`notElem` body ++ arena) -- TODO: Generalize this fruit thing
        let snake = Snake body 3 dir dir
-       return (Game snake fruit_pos Playing (SpecialKey KeyUnknown))
+       return (Game snake fruit_pos Playing (SpecialKey KeyUnknown) player_mode)
 
-     else genFreshStart
+     else genFreshStart player_mode
+
+turn :: Direction -> Move -> Direction
+dir `turn` StayFront = dir
+
+UP   `turn` TurnLeft = LEFT
+LEFT `turn` TurnLeft = DOWN
+DOWN `turn` TurnLeft = RIGHT
+RIGHT`turn` TurnLeft = UP
+
+UP   `turn` TurnRight = RIGHT
+RIGHT`turn` TurnRight = DOWN
+DOWN `turn` TurnRight = LEFT
+LEFT `turn` TurnRight = UP
+
+
